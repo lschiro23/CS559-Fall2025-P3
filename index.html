@@ -70,6 +70,7 @@ body { margin: 0; overflow: hidden; font-family: 'Arial', sans-serif; background
     display: none;
     z-index: 200;
 }
+
 canvas { display: block; }
 </style>
 </head>
@@ -108,10 +109,13 @@ let scene, camera, renderer;
 let player;
 let platforms=[], obstacles=[], collectibles=[], particles=[];
 let score=0, combo=0, maxCombo=0;
-let speed=0.15;
+
+let speed = 0.25; 
+
 let prototype=true;
 let running=true;
 let jumping=false, jumpVel=0, lane=0;
+
 const laneWidth=3, gravity=-0.02, jumpPower=0.35;
 
 function init() {
@@ -370,7 +374,8 @@ function update(){
             scene.remove(c);
             collectibles.splice(i,1);
             spawnParticles(c.position);
-            speed=Math.min(0.35,0.15+score*0.0001);
+
+            speed = Math.min(1.0, 0.25 + score * 0.0025);
         }
 
         if(c.position.z>10){
@@ -391,7 +396,7 @@ function update(){
     });
 
     document.getElementById("score").textContent=score;
-    document.getElementById("speed").textContent=(speed/0.15).toFixed(1)+"x";
+    document.getElementById("speed").textContent=(speed/0.25).toFixed(1)+"x";
     document.getElementById("combo").textContent=combo;
 }
 
@@ -441,7 +446,7 @@ function gameOver(){
 function restart(){
     resetScene();
     score=0; combo=0; maxCombo=0;
-    speed=0.15;
+    speed=0.25; 
     lane=0;
     jumping=false;
     running=true;
@@ -457,7 +462,6 @@ function inputs(){
     document.getElementById("modeToggle").onclick=()=>toggleMode();
     document.getElementById("restart").onclick=()=>restart();
 
-    /* SPACEBAR FIX */
     document.getElementById("modeToggle").onkeydown = e => e.preventDefault();
 
     addEventListener("keydown",e=>{
